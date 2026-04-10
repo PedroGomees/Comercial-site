@@ -4,882 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EventFest – Aluguel para Eventos</title>
+<meta name="description" content="A EventFest oferece aluguel de equipamentos premium para eventos: pistas de LED, cabines de fotos, plataformas 360 e muito mais. Transforme seu evento em uma experiência inesquecível!">
+<meta name="keywords" content="aluguel para eventos, kit festa, pista de led, plataforma 360, cabine de fotos, videomaker, rio de janeiro">
+<meta property="og:title" content="EventFest – Aluguel para Eventos">
+<meta property="og:description" content="Estruturas e equipamentos de impacto para o seu evento.">
+<meta property="og:image" content="fotos/logo-principal.png">
+<link rel="shortcut icon" href="fotos/logo-reduzida.png" type="image/x-icon">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
-<style>
-  /* ===== CSS VARIABLES ===== */
-  :root {
-    --purple:    #b050f2;
-    --neon:      #e1f532;
-    --dark:      #130759;
-    --orange:    #ff5b23;
-    --dark2:     #0d0440;
-    --dark3:     #1a0a6e;
-    --white:     #ffffff;
-    --glass:     rgba(176,80,242,0.08);
-    --glass2:    rgba(225,245,50,0.06);
-    --radius:    18px;
-    --radius-sm: 10px;
-    --glow-p:    0 0 24px rgba(176,80,242,0.55);
-    --glow-n:    0 0 24px rgba(225,245,50,0.55);
-    --glow-o:    0 0 24px rgba(255,91,35,0.55);
-    --trans:     0.3s cubic-bezier(.4,0,.2,1);
-  }
-
-  /* ===== RESET ===== */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; font-size: 16px; }
-  body {
-    font-family: 'Outfit', sans-serif;
-    background: var(--dark2);
-    color: var(--white);
-    overflow-x: hidden;
-    cursor: default;
-  }
-  a { text-decoration: none; color: inherit; }
-  img { max-width: 100%; display: block; }
-  ul { list-style: none; }
-
-  /* ===== SCROLLBAR ===== */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--dark2); }
-  ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 99px; }
-
-  /* ===== NOISE OVERLAY ===== */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9999;
-    opacity: .5;
-  }
-
-  /* ===== HEADER ===== */
-  header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 900;
-    padding: 0 clamp(1rem,5vw,3rem);
-    height: 72px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: rgba(13,4,64,0.7);
-    backdrop-filter: blur(18px);
-    border-bottom: 1px solid rgba(176,80,242,0.15);
-    transition: background var(--trans), box-shadow var(--trans);
-  }
-  header.scrolled {
-    background: rgba(13,4,64,0.95);
-    box-shadow: 0 4px 40px rgba(176,80,242,0.2);
-  }
-  .logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
-    letter-spacing: 2px;
-    background: linear-gradient(135deg, var(--purple), var(--neon));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-  }
-  .logo span { color: var(--orange); -webkit-text-fill-color: var(--orange); }
-  nav { display: flex; align-items: center; gap: clamp(1rem,3vw,2.5rem); }
-  nav a {
-    font-size: .9rem;
-    font-weight: 600;
-    letter-spacing: .5px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,.75);
-    position: relative;
-    transition: color var(--trans);
-  }
-  nav a::after {
-    content: '';
-    position: absolute;
-    bottom: -4px; left: 0;
-    width: 0; height: 2px;
-    background: var(--neon);
-    border-radius: 99px;
-    transition: width var(--trans);
-  }
-  nav a:hover { color: var(--neon); }
-  nav a:hover::after { width: 100%; }
-  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
-  .hamburger span { width: 26px; height: 2px; background: var(--white); border-radius: 99px; transition: var(--trans); }
-
-  /* ===== HERO ===== */
-  #hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    padding: 100px clamp(1.5rem,8vw,7rem) 4rem;
-  }
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 70% 50%, rgba(176,80,242,.22) 0%, transparent 65%),
-      radial-gradient(ellipse 60% 40% at 10% 80%, rgba(255,91,35,.14) 0%, transparent 55%),
-      radial-gradient(ellipse 50% 50% at 85% 10%, rgba(225,245,50,.08) 0%, transparent 55%),
-      linear-gradient(160deg, #0d0440 0%, #130759 50%, #1a054a 100%);
-  }
-  /* Lightning SVG decorations */
-  .lightning { position: absolute; pointer-events: none; }
-  .lightning-1 { top: -5%; right: 5%; width: 420px; opacity: .55; transform: rotate(-10deg); }
-  .lightning-2 { bottom: -5%; left: -3%; width: 340px; opacity: .35; transform: rotate(170deg) scaleX(-1); }
-  .lightning-3 { top: 30%; right: 30%; width: 200px; opacity: .25; transform: rotate(25deg); }
-
-  /* Orbs */
-  .orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    pointer-events: none;
-  }
-  .orb-1 { width: 500px; height: 500px; background: rgba(176,80,242,.18); top: -10%; right: -5%; }
-  .orb-2 { width: 350px; height: 350px; background: rgba(255,91,35,.12); bottom: -8%; left: 5%; }
-  .orb-3 { width: 200px; height: 200px; background: rgba(225,245,50,.1); top: 20%; left: 45%; }
-
-  .hero-content { position: relative; z-index: 2; max-width: 700px; }
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: .5rem;
-    background: rgba(225,245,50,.1);
-    border: 1px solid rgba(225,245,50,.3);
-    color: var(--neon);
-    font-size: .78rem;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    padding: .35rem .9rem;
-    border-radius: 99px;
-    margin-bottom: 1.5rem;
-    animation: fadeSlideUp .6s ease both;
-  }
-  .hero-badge::before { content: '⚡'; font-size: 1rem; }
-  .hero-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(3rem, 9vw, 7rem);
-    line-height: .95;
-    letter-spacing: 1px;
-    margin-bottom: 1.2rem;
-    animation: fadeSlideUp .7s .1s ease both;
-  }
-  .hero-title .accent { color: var(--neon); }
-  .hero-title .accent-o { color: var(--orange); }
-  .hero-sub {
-    font-size: clamp(1rem,2.2vw,1.2rem);
-    font-weight: 400;
-    color: rgba(255,255,255,.7);
-    max-width: 480px;
-    line-height: 1.6;
-    margin-bottom: 2.2rem;
-    animation: fadeSlideUp .7s .2s ease both;
-  }
-  .hero-cta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    animation: fadeSlideUp .7s .3s ease both;
-  }
-
-  /* ===== BUTTONS ===== */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: .5rem;
-    padding: .85rem 2rem;
-    border-radius: 99px;
-    font-size: .95rem;
-    font-weight: 700;
-    letter-spacing: .5px;
-    cursor: pointer;
-    border: none;
-    transition: transform var(--trans), box-shadow var(--trans), opacity var(--trans);
-    text-transform: uppercase;
-  }
-  .btn:hover { transform: translateY(-3px) scale(1.03); }
-  .btn-primary {
-    background: linear-gradient(135deg, var(--purple), #8030c8);
-    color: var(--white);
-    box-shadow: var(--glow-p);
-  }
-  .btn-primary:hover { box-shadow: 0 0 40px rgba(176,80,242,.8); }
-  .btn-neon {
-    background: var(--neon);
-    color: var(--dark2);
-    box-shadow: var(--glow-n);
-  }
-  .btn-neon:hover { box-shadow: 0 0 40px rgba(225,245,50,.9); }
-  .btn-orange {
-    background: linear-gradient(135deg, var(--orange), #e03500);
-    color: var(--white);
-    box-shadow: var(--glow-o);
-  }
-  .btn-orange:hover { box-shadow: 0 0 40px rgba(255,91,35,.8); }
-  .btn-outline {
-    background: transparent;
-    color: var(--white);
-    border: 2px solid rgba(255,255,255,.3);
-  }
-  .btn-outline:hover { border-color: var(--purple); color: var(--purple); box-shadow: var(--glow-p); }
-  .btn-ghost {
-    background: transparent;
-    color: var(--purple);
-    border: 2px solid var(--purple);
-  }
-  .btn-ghost:hover { background: var(--purple); color: var(--white); box-shadow: var(--glow-p); }
-
-  /* ===== SECTION COMMONS ===== */
-  section { padding: clamp(4rem,10vh,7rem) clamp(1.5rem,6vw,5rem); }
-  .section-header { text-align: center; margin-bottom: clamp(2.5rem,5vw,4rem); }
-  .section-tag {
-    display: inline-block;
-    font-size: .72rem;
-    font-weight: 700;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color: var(--neon);
-    background: rgba(225,245,50,.08);
-    border: 1px solid rgba(225,245,50,.25);
-    padding: .3rem .9rem;
-    border-radius: 99px;
-    margin-bottom: .8rem;
-  }
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2.2rem,6vw,4.5rem);
-    line-height: 1;
-    letter-spacing: .5px;
-  }
-  .section-title .hl { color: var(--purple); }
-  .section-desc {
-    margin-top: .8rem;
-    color: rgba(255,255,255,.6);
-    font-size: 1rem;
-    max-width: 520px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.6;
-  }
-
-  /* ===== STATS STRIP ===== */
-  #stats {
-    padding: 2.5rem clamp(1.5rem,6vw,5rem);
-    background: linear-gradient(90deg, rgba(176,80,242,.1), rgba(225,245,50,.06), rgba(255,91,35,.08));
-    border-top: 1px solid rgba(176,80,242,.2);
-    border-bottom: 1px solid rgba(176,80,242,.2);
-  }
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
-    gap: 1.5rem;
-    text-align: center;
-  }
-  .stat-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.8rem;
-    background: linear-gradient(135deg, var(--neon), var(--purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1;
-  }
-  .stat-label { font-size: .82rem; color: rgba(255,255,255,.55); font-weight: 500; margin-top: .3rem; }
-
-  /* ===== PRODUCTS ===== */
-  #produtos { background: linear-gradient(180deg, var(--dark2) 0%, var(--dark) 100%); }
-  .product-filter {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .6rem;
-    justify-content: center;
-    margin-bottom: 2.5rem;
-  }
-  .filter-btn {
-    padding: .45rem 1.2rem;
-    border-radius: 99px;
-    font-size: .82rem;
-    font-weight: 600;
-    letter-spacing: .5px;
-    text-transform: uppercase;
-    cursor: pointer;
-    border: 1.5px solid rgba(176,80,242,.35);
-    background: transparent;
-    color: rgba(255,255,255,.6);
-    transition: var(--trans);
-  }
-  .filter-btn:hover, .filter-btn.active {
-    background: var(--purple);
-    border-color: var(--purple);
-    color: var(--white);
-    box-shadow: var(--glow-p);
-  }
-  .products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-    gap: 1.6rem;
-  }
-  .product-card {
-    background: rgba(176,80,242,.07);
-    border: 1px solid rgba(176,80,242,.18);
-    border-radius: var(--radius);
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform var(--trans), box-shadow var(--trans), border-color var(--trans);
-    animation: cardIn .5s ease both;
-  }
-  .product-card:hover {
-    transform: translateY(-8px) scale(1.01);
-    box-shadow: 0 20px 60px rgba(176,80,242,.25), var(--glow-p);
-    border-color: rgba(176,80,242,.5);
-  }
-  .product-img-wrap {
-    position: relative;
-    overflow: hidden;
-    height: 220px;
-    background: linear-gradient(135deg, #1a0a6e, #0d0440);
-  }
-  .product-img-wrap img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    transition: transform .5s ease;
-  }
-  .product-card:hover .product-img-wrap img { transform: scale(1.08); }
-  .product-badge {
-    position: absolute;
-    top: .8rem; right: .8rem;
-    background: var(--neon);
-    color: var(--dark2);
-    font-size: .68rem;
-    font-weight: 800;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: .25rem .65rem;
-    border-radius: 99px;
-  }
-  .product-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(13,4,64,.8) 0%, transparent 50%);
-    opacity: 0;
-    transition: opacity var(--trans);
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding-bottom: 1rem;
-  }
-  .product-card:hover .product-overlay { opacity: 1; }
-  .product-body { padding: 1.3rem; }
-  .product-category {
-    font-size: .7rem;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--purple);
-    margin-bottom: .4rem;
-  }
-  .product-name {
-    font-size: 1.05rem;
-    font-weight: 700;
-    margin-bottom: .4rem;
-    line-height: 1.3;
-  }
-  .product-desc {
-    font-size: .85rem;
-    color: rgba(255,255,255,.55);
-    line-height: 1.5;
-    margin-bottom: 1.1rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .product-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: .5rem;
-  }
-  .product-price { font-size: .82rem; color: rgba(255,255,255,.45); }
-  .product-price strong { color: var(--neon); font-size: 1rem; }
-
-  /* ===== COMBOS ===== */
-  #combos {
-    background: linear-gradient(160deg, var(--dark) 0%, #0d0440 100%);
-    position: relative;
-    overflow: hidden;
-  }
-  #combos::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(225,245,50,.07), transparent);
-    pointer-events: none;
-  }
-  .combos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px,1fr));
-    gap: 1.8rem;
-  }
-  .combo-card {
-    position: relative;
-    background: rgba(13,4,64,.7);
-    border: 1.5px solid rgba(225,245,50,.25);
-    border-radius: var(--radius);
-    padding: 2rem 1.8rem;
-    overflow: hidden;
-    transition: transform var(--trans), box-shadow var(--trans);
-    animation: cardIn .5s ease both;
-  }
-  .combo-card::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: var(--radius);
-    padding: 1.5px;
-    background: linear-gradient(135deg, var(--neon), var(--purple), var(--orange));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: destination-out;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity var(--trans);
-  }
-  .combo-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(225,245,50,.15); }
-  .combo-card:hover::before { opacity: 1; }
-  .combo-star {
-    position: absolute;
-    top: 1rem; right: 1rem;
-    width: 38px; height: 38px;
-    background: var(--orange);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    box-shadow: var(--glow-o);
-  }
-  .combo-tag {
-    font-size: .7rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--neon);
-    margin-bottom: .5rem;
-  }
-  .combo-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.7rem;
-    line-height: 1;
-    margin-bottom: .8rem;
-    letter-spacing: .5px;
-  }
-  .combo-items {
-    display: flex;
-    flex-direction: column;
-    gap: .4rem;
-    margin-bottom: 1.3rem;
-  }
-  .combo-item {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    font-size: .88rem;
-    color: rgba(255,255,255,.7);
-  }
-  .combo-item::before { content: '⚡'; font-size: .75rem; color: var(--neon); flex-shrink: 0; }
-  .combo-price {
-    font-size: .85rem;
-    color: rgba(255,255,255,.4);
-    margin-bottom: 1.2rem;
-  }
-  .combo-price strong {
-    font-size: 1.4rem;
-    color: var(--neon);
-    font-weight: 900;
-  }
-  .combo-divider {
-    width: 40px; height: 2px;
-    background: linear-gradient(90deg, var(--neon), var(--purple));
-    border-radius: 99px;
-    margin-bottom: 1rem;
-  }
-
-  /* ===== CONTACT ===== */
-  #contato {
-    background: linear-gradient(180deg, #0d0440 0%, var(--dark2) 100%);
-    position: relative;
-    overflow: hidden;
-  }
-  #contato::after {
-    content: '';
-    position: absolute;
-    bottom: -150px; right: -100px;
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(176,80,242,.12), transparent 60%);
-    pointer-events: none;
-  }
-  .contact-wrap {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-    position: relative;
-    z-index: 2;
-  }
-  .contact-info h3 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2rem,4vw,3.2rem);
-    line-height: 1;
-    margin-bottom: 1rem;
-  }
-  .contact-info p { color: rgba(255,255,255,.6); line-height: 1.7; margin-bottom: 2rem; }
-  .contact-channels { display: flex; flex-direction: column; gap: 1rem; }
-  .channel-btn {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 1.5rem;
-    border-radius: var(--radius-sm);
-    border: 1.5px solid rgba(255,255,255,.1);
-    background: rgba(255,255,255,.03);
-    cursor: pointer;
-    transition: var(--trans);
-    text-align: left;
-  }
-  .channel-btn:hover { border-color: var(--purple); background: rgba(176,80,242,.1); transform: translateX(6px); }
-  .channel-icon {
-    width: 46px; height: 46px;
-    border-radius: var(--radius-sm);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    flex-shrink: 0;
-  }
-  .channel-icon.green { background: rgba(37,211,102,.15); border: 1px solid rgba(37,211,102,.3); }
-  .channel-icon.purple { background: rgba(176,80,242,.15); border: 1px solid rgba(176,80,242,.3); }
-  .channel-text strong { display: block; font-size: .95rem; font-weight: 700; }
-  .channel-text span { font-size: .8rem; color: rgba(255,255,255,.5); }
-
-  .contact-form {
-    background: rgba(176,80,242,.06);
-    border: 1px solid rgba(176,80,242,.2);
-    border-radius: var(--radius);
-    padding: 2.5rem;
-  }
-  .contact-form h4 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-    letter-spacing: .5px;
-  }
-  .form-group { margin-bottom: 1.2rem; }
-  .form-group label {
-    display: block;
-    font-size: .82rem;
-    font-weight: 600;
-    color: rgba(255,255,255,.6);
-    text-transform: uppercase;
-    letter-spacing: .5px;
-    margin-bottom: .4rem;
-  }
-  .form-group input,
-  .form-group textarea,
-  .form-group select {
-    width: 100%;
-    background: rgba(255,255,255,.05);
-    border: 1.5px solid rgba(176,80,242,.2);
-    border-radius: var(--radius-sm);
-    padding: .85rem 1rem;
-    color: var(--white);
-    font-family: 'Outfit', sans-serif;
-    font-size: .95rem;
-    outline: none;
-    transition: border-color var(--trans), box-shadow var(--trans);
-  }
-  .form-group input:focus,
-  .form-group textarea:focus,
-  .form-group select:focus {
-    border-color: var(--purple);
-    box-shadow: 0 0 0 3px rgba(176,80,242,.15);
-  }
-  .form-group textarea { resize: vertical; min-height: 120px; }
-  .form-group select option { background: var(--dark2); }
-
-  /* ===== FOOTER ===== */
-  footer {
-    background: var(--dark2);
-    border-top: 1px solid rgba(176,80,242,.15);
-    padding: 3rem clamp(1.5rem,6vw,5rem) 1.5rem;
-  }
-  .footer-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 3rem;
-    margin-bottom: 2.5rem;
-  }
-  .footer-brand .logo { margin-bottom: 1rem; }
-  .footer-brand p { color: rgba(255,255,255,.45); font-size: .88rem; line-height: 1.7; max-width: 280px; }
-  .footer-col h5 {
-    font-size: .8rem;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,.5);
-    margin-bottom: 1rem;
-  }
-  .footer-col a {
-    display: block;
-    font-size: .88rem;
-    color: rgba(255,255,255,.55);
-    margin-bottom: .5rem;
-    transition: color var(--trans);
-  }
-  .footer-col a:hover { color: var(--neon); }
-  .social-links { display: flex; gap: .75rem; margin-top: 1.2rem; }
-  .social-link {
-    width: 38px; height: 38px;
-    border-radius: var(--radius-sm);
-    background: rgba(176,80,242,.1);
-    border: 1px solid rgba(176,80,242,.25);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    transition: var(--trans);
-    cursor: pointer;
-  }
-  .social-link:hover { background: var(--purple); box-shadow: var(--glow-p); transform: translateY(-3px); }
-  .footer-bottom {
-    border-top: 1px solid rgba(255,255,255,.06);
-    padding-top: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  .footer-bottom p { font-size: .8rem; color: rgba(255,255,255,.3); }
-
-  /* ===== FLOATING WHATSAPP ===== */
-  .whatsapp-float {
-    position: fixed;
-    bottom: 2rem; right: 2rem;
-    width: 58px; height: 58px;
-    background: #25d366;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.6rem;
-    cursor: pointer;
-    z-index: 999;
-    box-shadow: 0 4px 30px rgba(37,211,102,.5);
-    transition: transform var(--trans), box-shadow var(--trans);
-    animation: pulse 2.5s infinite;
-  }
-  .whatsapp-float:hover { transform: scale(1.12); box-shadow: 0 6px 40px rgba(37,211,102,.8); animation: none; }
-  .whatsapp-float .tooltip {
-    position: absolute;
-    right: 68px;
-    background: rgba(13,4,64,.95);
-    border: 1px solid rgba(37,211,102,.3);
-    color: var(--white);
-    font-size: .8rem;
-    font-weight: 600;
-    white-space: nowrap;
-    padding: .45rem .9rem;
-    border-radius: var(--radius-sm);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity var(--trans);
-  }
-  .whatsapp-float:hover .tooltip { opacity: 1; }
-
-  /* ===== MODAL ===== */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(5,2,30,.92);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .3s ease;
-  }
-  .modal-overlay.open { opacity: 1; pointer-events: all; }
-  .modal {
-    background: linear-gradient(145deg, #180c6a, #0d0440);
-    border: 1px solid rgba(176,80,242,.3);
-    border-radius: var(--radius);
-    max-width: 820px;
-    width: 100%;
-    max-height: 88vh;
-    overflow-y: auto;
-    transform: translateY(30px) scale(.97);
-    transition: transform .35s cubic-bezier(.4,0,.2,1);
-    position: relative;
-  }
-  .modal-overlay.open .modal { transform: translateY(0) scale(1); }
-  .modal-header { position: relative; height: 300px; overflow: hidden; }
-  .modal-header img { width: 100%; height: 100%; object-fit: cover; }
-  .modal-header video { width: 100%; height: 100%; object-fit: cover; }
-  .modal-header iframe { width: 100%; height: 100%; border: none; }
-  .modal-media-tabs {
-    display: flex;
-    gap: .5rem;
-    position: absolute;
-    bottom: 1rem;
-    left: 1rem;
-    z-index: 10;
-  }
-  .media-tab {
-    padding: .3rem .85rem;
-    border-radius: 99px;
-    font-size: .72rem;
-    font-weight: 700;
-    letter-spacing: .5px;
-    text-transform: uppercase;
-    cursor: pointer;
-    border: 1.5px solid rgba(255,255,255,.3);
-    background: rgba(13,4,64,.6);
-    color: rgba(255,255,255,.8);
-    transition: var(--trans);
-    backdrop-filter: blur(6px);
-  }
-  .media-tab.active, .media-tab:hover {
-    background: var(--purple);
-    border-color: var(--purple);
-    color: var(--white);
-    box-shadow: var(--glow-p);
-  }
-  .service-icon-wrap {
-    width: 100%; height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #180c6a, #0d0440);
-    font-size: 5rem;
-  }
-  .modal-header::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 60%;
-    background: linear-gradient(to top, #0d0440, transparent);
-  }
-  .modal-close {
-    position: absolute;
-    top: 1rem; right: 1rem;
-    width: 38px; height: 38px;
-    background: rgba(13,4,64,.8);
-    border: 1px solid rgba(176,80,242,.3);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-    font-size: 1.1rem;
-    color: var(--white);
-    transition: var(--trans);
-  }
-  .modal-close:hover { background: var(--orange); border-color: var(--orange); }
-  .modal-body { padding: 2rem 2rem 2.5rem; }
-  .modal-category { font-size: .72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--purple); margin-bottom: .5rem; }
-  .modal-name { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; letter-spacing: .5px; margin-bottom: 1rem; }
-  .modal-desc { color: rgba(255,255,255,.7); line-height: 1.7; margin-bottom: 1.5rem; }
-  .modal-specs { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-bottom: 1.8rem; }
-  .spec-item {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    font-size: .85rem;
-    color: rgba(255,255,255,.65);
-    background: rgba(176,80,242,.07);
-    border: 1px solid rgba(176,80,242,.15);
-    border-radius: var(--radius-sm);
-    padding: .5rem .8rem;
-  }
-  .spec-item span { color: var(--neon); }
-  .modal-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
-
-  /* ===== SCROLL REVEAL ===== */
-  .reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity .6s ease, transform .6s ease;
-  }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-
-  /* ===== ANIMATIONS ===== */
-  @keyframes fadeSlideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes cardIn {
-    from { opacity: 0; transform: translateY(20px) scale(.97); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
-  }
-  @keyframes pulse {
-    0%,100% { box-shadow: 0 4px 30px rgba(37,211,102,.5); }
-    50%      { box-shadow: 0 4px 50px rgba(37,211,102,.9), 0 0 0 10px rgba(37,211,102,.1); }
-  }
-  @keyframes float {
-    0%,100% { transform: translateY(0); }
-    50%      { transform: translateY(-14px); }
-  }
-  @keyframes rotateSlow {
-    to { transform: rotate(360deg); }
-  }
-  @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
-
-  /* Skeleton loader */
-  .skeleton {
-    background: linear-gradient(90deg, rgba(176,80,242,.1) 25%, rgba(176,80,242,.2) 50%, rgba(176,80,242,.1) 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    border-radius: var(--radius-sm);
-  }
-
-  /* ===== RESPONSIVE ===== */
-  @media (max-width: 900px) {
-    .contact-wrap { grid-template-columns: 1fr; gap: 2.5rem; }
-    .footer-grid { grid-template-columns: 1fr 1fr; }
-    .footer-brand { grid-column: span 2; }
-  }
-  @media (max-width: 768px) {
-    nav { display: none; flex-direction: column; position: fixed; top: 72px; left: 0; right: 0; background: rgba(13,4,64,.98); padding: 2rem; gap: 1.5rem; border-bottom: 1px solid rgba(176,80,242,.2); }
-    nav.open { display: flex; }
-    .hamburger { display: flex; }
-    .products-grid { grid-template-columns: 1fr; }
-    .combos-grid { grid-template-columns: 1fr; }
-    .modal-specs { grid-template-columns: 1fr; }
-    .hero-cta { flex-direction: column; align-items: flex-start; }
-    .hero-cta .btn { width: 100%; justify-content: center; }
-  }
-  @media (max-width: 600px) {
-    .footer-grid { grid-template-columns: 1fr; }
-    .footer-brand { grid-column: span 1; }
-    .footer-bottom { flex-direction: column; text-align: center; }
-  }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -891,11 +24,12 @@
 
 <!-- ===== HEADER ===== -->
 <header id="header">
-  <div class="logo"><img src="/fotos/LOGO PRINCIPAL (10).png" width="400px"></div>
+  <div class="logo"><img src="fotos/logo-principal.png" width="400px" alt="EventFest Logo"></div>
   <nav id="nav">
     <a href="#inicio">Início</a>
     <a href="#produtos">Produtos</a>
     <a href="#combos">Combos</a>
+    <a href="#faq">FAQ</a>
     <a href="#contato">Contato</a>
   </nav>
   <div class="hamburger" id="hamburger" onclick="toggleMenu()">
@@ -903,6 +37,7 @@
   </div>
 </header>
 
+<main>
 <!-- ===== HERO ===== -->
 <section id="inicio">
   <div class="hero-bg"></div>
@@ -986,6 +121,54 @@
   <div class="combos-grid" id="combosGrid"></div>
 </section>
 
+<!-- ===== FAQ ===== -->
+<section id="faq">
+  <div class="section-header reveal">
+    <span class="section-tag">🤔 Dúvidas?</span>
+    <h2 class="section-title">Perguntas <span class="hl">Frequentes</span></h2>
+    <p class="section-desc">Tire suas dúvidas sobre o nosso serviço e o aluguel dos equipamentos.</p>
+  </div>
+
+  <div class="faq-container reveal">
+    <details class="faq-item">
+      <summary class="faq-question">Quantas horas de evento?</summary>
+      <div class="faq-answer"><p>Nossos pacotes cobrem de 2 a 5 horas de evento, oferecendo flexibilidade para a sua festa ou gravação.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-question">Como recebo os vídeos e/ou fotos?</summary>
+      <div class="faq-answer"><p>Você receberá um link na nuvem com todas as mídias (vídeos e fotos) em alta qualidade.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-question">Qual região vocês atendem?</summary>
+      <div class="faq-answer"><p>Atendemos à cidade do Rio de Janeiro, Baixada Fluminense, Niterói, entre outras regiões próximas.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-question">Tem frete / taxa de deslocamento?</summary>
+      <div class="faq-answer"><p>Sim, o valor do frete varia dependendo do local e da distância do evento, e é calculado à parte.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-question">Possui acessórios divertidos?</summary>
+      <div class="faq-answer"><p>Sim! Levamos diversos acessórios para usar durante os vídeos e fotos, deixando tudo mais animado e descontraído.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-question">O que está incluso no serviço?</summary>
+      <div class="faq-answer"><p>Nos serviços audiovisuais, incluímos vídeos e fotos com o uso de uma máscara profissional e personalizada selecionada ou criada com o gosto do cliente.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-question">Em quanto tempo recebo meu vídeo para os stories?</summary>
+      <div class="faq-answer"><p>Seu vídeo editado, otimizado para postar nos Stories ou no Reels, será entregue em no máximo 3 dias (72 horas).</p></div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-question">Posso escolher a música da edição?</summary>
+      <div class="faq-answer"><p>Com certeza. Você pode escolher a música que mais gosta e nos enviar para usarmos na sua edição exclusiva.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-question">Como reservo a data com vocês?</summary>
+      <div class="faq-answer"><p>Pedimos um sinal para confirmar a data na agenda e garantir sua reserva. O valor restante só precisa ser pago no dia do evento.</p></div>
+    </details>
+  </div>
+</section>
+
 <!-- ===== CONTACT ===== -->
 <section id="contato">
   <div class="contact-wrap">
@@ -994,15 +177,11 @@
       <h3>Vamos criar algo<br><span style="color:var(--neon)">incrível juntos!</span></h3>
       <p>Entre em contato conosco pelo WhatsApp ou preencha o formulário. Respondemos rapidinho!</p>
       <div class="contact-channels">
-        <a class="channel-btn" href="https://wa.me/5511999999999" target="_blank">
+        <a class="channel-btn" href="https://wa.me/5521970383997" target="_blank">
           <div class="channel-icon green">💬</div>
           <div class="channel-text">
             <strong>WhatsApp</strong>
             <span>Resposta em minutos</span>
-          </div>
-        </a>
-       
-           
           </div>
         </a>
       </div>
@@ -1040,7 +219,7 @@
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
-      <div class="logo"><img src="fotos/oc360 reduzida (2).png" width="100px"></div>
+      <div class="logo"><img src="fotos/logo-reduzida.png" width="100px" alt="EventFest Logo Reduzida"></div>
       <p>Transformando eventos comuns em experiências extraordinárias. Aluguel de equipamentos premium para todos os tipos de festa.</p>
       <div class="social-links">
         <a class="social-link" href="#" title="Instagram">📸</a>
@@ -1054,6 +233,7 @@
       <a href="#inicio">Início</a>
       <a href="#produtos">Produtos</a>
       <a href="#combos">Combos</a>
+      <a href="#faq">FAQ</a>
       <a href="#contato">Contato</a>
     </div>
     <div class="footer-col">
@@ -1070,6 +250,7 @@
     <p>Feito com ⚡ para eventos incríveis</p>
   </div>
 </footer>
+</main>
 
 <!-- ===== MODAL ===== -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
@@ -1100,7 +281,7 @@ const produtos = [
   categoria: "Plataforma",
   desc: "Pista de dança com LED RGB embutido, efeitos sincronizados com a música. Perfeita para festas noturnas.",
   descLonga: "Nossa Pista de LED RGB transforma qualquer ambiente em uma experiência sensorial completa. Com efeitos sincronizados com o ritmo da música, ela se torna o centro das atenções em qualquer evento.",
-  imagem: "fotos/pista2.jpg",
+  imagem: "fotos/pista-led.jpg",
   badge: "Top",
   specs: ["Tamanho: 2x2m", "LED RGB", "Sincronização musical"],
   preco: "sob consulta"
@@ -1111,7 +292,7 @@ const produtos = [
   categoria: "Plataforma",
   desc: "Plataforma interativa para vídeos dinâmicos e compartilháveis.",
   descLonga: "A Plataforma 360 registra vídeos envolventes enquanto o usuário interage no centro. Ideal para eventos modernos, com entrega rápida via QR Code e arquivo digital.",
-  imagem: "fotos/Plataforma360.jpeg",
+  imagem: "fotos/plataforma-360.jpeg",
   badge: null,
   specs: ["Arquivo digital", "QR CODE", "Bastões RGB inclusos"],
   preco: "sob consulta"
@@ -1122,7 +303,7 @@ const produtos = [
   categoria: "Cabines",
   desc: "Cabine iluminada com efeito infinito de LED para fotos e vídeos imersivos.",
   descLonga: "Cabine de 1m² com espelhos e LEDs criando um efeito infinito. Ideal para fotos e vídeos impactantes com controle via Bluetooth.",
-  imagem: "/fotos/tunel4.jpg",
+  imagem: "fotos/tunel-infinity.jpg",
   badge: "Top",
   specs: ["1m x 1m", "QR CODE", "Bluetooth", "Foto e vídeo"],
   preco: "sob consulta"
@@ -1133,7 +314,7 @@ const produtos = [
   categoria: "Cabines",
   desc: "Cabine acrílica estilizada para fotos modernas e personalizadas.",
   descLonga: "Estrutura de 2m em acrílico transparente com adesivos personalizados para criar fotos únicas em eventos.",
-  imagem: "fotos/caixavogue3.jpeg",
+  imagem: "fotos/caixa-vogue.jpeg",
   badge: null,
   specs: ["Estrutura 2m", "Acrílico", "Personalização", "Fotos"],
   preco: "sob consulta"
@@ -1144,7 +325,7 @@ const produtos = [
   categoria: "Arcos",
   desc: "Túnel de LED para entrada imersiva e impactante.",
   descLonga: "Estrutura em formato de túnel com LEDs sincronizados com música e controle via Bluetooth.",
-  imagem: "fotos/arco2.jpeg",
+  imagem: "fotos/arco-led.jpeg",
   badge: "Premium",
   specs: ["Túnel LED", "Bluetooth", "100+ efeitos", "Sincronização musical"],
   preco: "sob consulta"
@@ -1155,7 +336,7 @@ const produtos = [
   categoria: "Cabines",
   desc: "Cabine espelhada com LED para fotos e vídeos criativos.",
   descLonga: "Cabine com paredes espelhadas e iluminação LED, com possibilidade de cenários internos e acesso via QR Code.",
-  imagem: "fotos/espelhada2.jpg",
+  imagem: "fotos/cabine-espelhada.jpg",
   badge: "🔥 Viral",
   specs: ["Espelhada", "LED lateral", "QR Code", "Foto e vídeo"],
   preco: "sob consulta"
@@ -1175,8 +356,8 @@ const produtos = [
   id: 8,
   nome: "Videomaker",
   categoria: "Fotografia & Vídeo",
-  desc: "Produção de vídeo profissional.",
-  descLonga: "Vídeos com edição cinematográfica e entrega completa.",
+  desc: "Produção de um vídeo de 3 minutos + 1 vídeo para stories do Instagram.",
+  descLonga: "Produção audiovisual completa que inclui um vídeo principal de 3 minutos com edição profissional e 1 vídeo otimizado para os stories do Instagram.",
   imagem: "https://images.unsplash.com/photo-1601506521937-0121a7fc2a6b?w=600&q=80",
   badge: "🎬 Destaque",
   specs: ["4K", "Drone", "Edição"],
@@ -1188,7 +369,7 @@ const produtos = [
   categoria: "Arcos",
   desc: "Arco de LED em formato de setas para entradas guiadas.",
   descLonga: "Estrutura com LEDs direcionais em formato de setas, com efeitos dinâmicos e controle via Bluetooth.",
-  imagem: "fotos/setas.jpg",
+  imagem: "fotos/arco-setas.jpg",
   badge: "Premium",
   specs: ["Setas LED", "Bluetooth", "Efeitos dinâmicos"],
   preco: "sob consulta"
@@ -1201,7 +382,7 @@ const produtos = [
   categoria: "Plataforma",
   desc: "Plataforma com bastões de LED retos para efeito visual moderno.",
   descLonga: "Estrutura com bastões de LED de 2 metros posicionados ao redor da plataforma, criando vídeos e fotos com iluminação intensa e estilizada.",
-  imagem: "fotos/Plataforma360.jpeg",
+  imagem: "fotos/plataforma-bastoes.jpeg",
   badge: "Novo",
   specs: ["Bastões 2m", "LED", "Foto e vídeo"],
   preco: "sob consulta"
@@ -1212,20 +393,9 @@ const produtos = [
   categoria: "Plataforma",
   desc: "Plataforma com iluminação em setas para efeito direcionado.",
   descLonga: "Combinação da plataforma com LEDs em formato de setas criando dinâmica visual e movimento nas gravações.",
-  imagem: "fotos/Plataforma360.jpeg",
+  imagem: "fotos/plataforma-setas.jpg",
   badge: "Novo",
   specs: ["Setas LED", "Dinâmico", "Vídeo"],
-  preco: "sob consulta"
-},
-{
-  id: 13,
-  nome: "Plataforma + Letreiro LED",
-  categoria: "Plataforma",
-  desc: "Plataforma com letreiro luminoso personalizado.",
-  descLonga: "Inclui letreiro LED com nome ou frase personalizada, ideal para eventos exclusivos e branding.",
-  imagem: "fotos/Plataforma360.jpeg",
-  badge: "Premium",
-  specs: ["Letreiro LED", "Personalização", "Foto e vídeo"],
   preco: "sob consulta"
 },
 {
@@ -1234,7 +404,7 @@ const produtos = [
   categoria: "Plataforma",
   desc: "Plataforma com iluminação em formato Z para efeito diferenciado.",
   descLonga: "Estrutura com bastões de LED em formato Z, criando um visual único e moderno para vídeos.",
-  imagem: "fotos/Plataforma360.jpeg",
+  imagem: "fotos/plataforma-z.jpg",
   badge: "Diferente",
   specs: ["Formato Z", "LED", "Visual moderno"],
   preco: "sob consulta"
@@ -1247,7 +417,7 @@ const produtos = [
   categoria: "Cabines",
   desc: "Versão maior da cabine espelhada para experiências ainda mais imersivas.",
   descLonga: "Cabine espelhada ampliada com mais espaço interno, ideal para grupos e fotos mais elaboradas, mantendo iluminação LED e acesso via QR Code.",
-  imagem: "fotos/espelhada2.jpg",
+  imagem: "fotos/cabine-premium.jpeg",
   badge: "Premium",
   specs: ["Maior espaço", "Espelhada", "LED", "QR Code"],
   preco: "sob consulta"
@@ -1350,7 +520,7 @@ function renderCombos() {
         ${c.itens.map(item => `<div class="combo-item">${item}</div>`).join('')}
       </div>
       <div class="combo-price">Valor: <strong>${c.preco}</strong></div>
-      <a class="btn btn-orange" href="https://wa.me/5511999999999" target="_blank" style="font-size:.85rem">
+      <a class="btn btn-orange" href="https://wa.me/5521970383997" target="_blank" style="font-size:.85rem">
         💬 Solicitar Combo
       </a>
     </div>
@@ -1391,7 +561,7 @@ function openModal(id) {
     `<div class="spec-item"><span>✓</span> ${s}</div>`
   ).join('');
   const msg = encodeURIComponent(`Olá! Tenho interesse em: ${p.nome}`);
-  document.getElementById("modalWA").href = `https://wa.me/5511999999999?text=${msg}`;
+  document.getElementById("modalWA").href = `https://wa.me/5521970383997?text=${msg}`;
   document.getElementById("modalOverlay").classList.add("open");
   document.body.style.overflow = "hidden";
 }
@@ -1480,7 +650,7 @@ function sendMessage() {
   const msg  = document.querySelector('.contact-form textarea').value.trim();
   if (!name || !msg) { alert('Por favor preencha seu nome e mensagem.'); return; }
   const text = encodeURIComponent(`Olá! Sou ${name}.\n\n${msg}`);
-  window.open(`https://wa.me/5511999999999?text=${text}`, '_blank');
+  window.open(`https://wa.me/5521970383997?text=${text}`, '_blank');
 }
 
 // ===== INIT =====
